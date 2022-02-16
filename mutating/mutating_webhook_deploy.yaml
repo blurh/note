@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutating
+  labels: 
+    app: mutating
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: mutating
+  template:
+    metadata:
+      labels: 
+        app: mutating
+    spec:
+      containers: 
+      - name: mutating
+        image: harbor.develop.com/oam/mutating:v1.0
+        ports: 
+        - name: web
+          containerPort: 443
+        resources: 
+          limits: 
+            memory: 500Mi
+            cpu: 100m
+        volumeMounts: 
+        - name: volume-tls
+          mountPath: "/opt/mutating/tls/"
+          readOnly: true
+      volumes:
+      - name: volume-tls
+        secret:
+          secretName: pod-mutating
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app: mutating
+  name: mutating
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    app: mutating

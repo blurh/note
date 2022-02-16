@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+  namespace: kube-ops
+  labels: 
+    app: busybox
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      pod-injection: enabled
+  template:
+    metadata:
+      labels: 
+        pod-injection: enabled
+    spec:
+      containers: 
+      - name: busybox
+        image: busybox:latest
+        command: [ "tail", "-f", "/etc/hosts" ]
+        resources: 
+          limits: 
+            memory: 500Mi
+            cpu: 100m

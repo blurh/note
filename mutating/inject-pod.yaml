@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: busybox
+  namespace: kube-ops
+  labels:
+    pod-injection: enabled
+spec:
+  containers:
+  - name: busybox
+    image: busybox:latest
+    command: [ "tail", "-f", "/etc/hosts" ]
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
