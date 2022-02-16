@@ -27,6 +27,11 @@ k apply -f mutating_webhook_configuration.yaml
 k create ns kube-ops
 ```
 
+- 创建证书 secret  
+```bash
+k apply -f secret.yaml
+```
+
 - 创建 mutating webhook server 到集群
 ```bash
 k apply -f mutating_webhook_deploy.yaml
